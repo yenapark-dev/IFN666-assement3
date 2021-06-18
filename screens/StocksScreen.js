@@ -87,7 +87,7 @@ export default function StocksScreen({ route }) {
         </View>
       </Swiper>
       }
-      {!pressed && <Text style={styles.item}> Please select the stock. </Text>}
+      {!pressed && <Text style={styles.item}>Please select the stock. </Text>}
 
     </View>
   );
