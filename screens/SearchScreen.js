@@ -15,7 +15,7 @@ export default function SearchScreen({ navigation }) {
 
   const getSymbolList = async () => {
     try {
-      let res = await fetch(ServerURL+"/symbol/list");
+      let res = await fetch(ServerURL + "/symbol/list");
       let data = await res.json();
 
       return data.Symbol.map((stock) => ({
@@ -37,12 +37,12 @@ export default function SearchScreen({ navigation }) {
   }
 
   const filteredStock = (search) => {
-    setSearch({ search });
-    if (search !== ""){
-      //setState(symbolList.filter((element) => element.symbol === search));
+    
+    setSearch(search);
+    if (search !== "") {
       setState(symbolList.filter((element) =>
-      element.symbol.toUpperCase().includes(search.toUpperCase()) ||
-      element.name.toUpperCase().includes(search.toUpperCase())
+        element.symbol.toUpperCase().includes(search.toUpperCase()) ||
+        element.name.toUpperCase().includes(search.toUpperCase())
       ));
     } else {
       setState(symbolList);
@@ -57,7 +57,6 @@ export default function SearchScreen({ navigation }) {
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <View style={styles.container}>
         <View >
-          {/* FixMe: add children here! */}
           <SearchBar
             placeholder="Search"
             onChangeText={filteredStock}
@@ -66,11 +65,11 @@ export default function SearchScreen({ navigation }) {
         </View>
         <ScrollView style={styles.scrollView}>
           {state.map((event) => {
-            return (<TouchableOpacity key={event.symbol} onPress={() => { addToWatchlist(event.symbol); navigation.navigate("Stocks"); }}>
-              <Text style={styles.item} >
-                {event.symbol}
-                {event.name}</Text>
-            </TouchableOpacity>);
+            return (
+              <TouchableOpacity key={event.symbol} onPress={() => { addToWatchlist(event.symbol); navigation.navigate("Stocks"); }}>
+                <Text style={styles.symbolInSearch} > {event.symbol} </Text>
+                <Text style={styles.compnayNameInSearch} >{event.name}</Text>
+              </TouchableOpacity>);
           })}
         </ScrollView>
       </View>
@@ -81,20 +80,25 @@ export default function SearchScreen({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: 22,
+    paddingTop: 7,
+    padding: 10,
   },
 
   scrollView: {
-    marginLeft: '20%',
+    marginLeft: '7%',
     width: '100%',
-    marginTop: '3%',
+    marginTop: '1%',
   },
 
-  item: {
-    fontSize: 15,
-    height: 45,
-    color: 'white',
-  }
-  // FixMe: add styles here ...
-  // use scaleSize(x) to adjust sizes for small/large screens
+  symbolInSearch: {
+    paddingHorizontal: scaleSize(5),
+    paddingTop: scaleSize(15),
+    color: "#fff",
+    fontSize: scaleSize(20),
+},
+
+compnayNameInSearch: {
+    paddingHorizontal: scaleSize(10),
+    color: "#fff",
+},
 });

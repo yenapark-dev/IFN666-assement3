@@ -23,7 +23,7 @@ export default function StockTable(props) {
         [props.table.high],
       ]
     }
-  console.log(props.table);
+
     return (
       <View>
         <Table borderStyle={{ borderWidth: 2, borderColor: '#b5b5b5' }}>

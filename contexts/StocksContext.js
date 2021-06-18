@@ -16,15 +16,13 @@ export const StocksProvider = ({ children }) => {
 export const useStocksContext = () => {
   const [state, setState] = useContext(StocksContext);
   const [flag, setFlag] = useState(false);
-  // can put more code here
 
   function addToWatchlist(newSymbol) {
     //FixMe: add the new symbol to the watchlist, save it in useStockContext state and persist to AsyncStorage
     
-    console.log("here");
     let result =true;
     state.map((symbol)=>{
-      if(symbol.newSymbol===newSymbol){
+      if(symbol.newSymbol === newSymbol){
        result = false;
       }
     })
@@ -35,8 +33,6 @@ export const useStocksContext = () => {
         return [...new Set(x)];
       });
     }
-    
-    // console.log(state);
     AsyncStorage.setItem("@WatchList", JSON.stringify(state));
   }
 
@@ -44,19 +40,24 @@ export const useStocksContext = () => {
   let _retrieveWatchList = async () => {
     try {
       const value = await AsyncStorage.getItem("@WatchList");
-      // console.log("Retrieved LOG");
       if (value !== null) {
         // We have data!!
         setState(JSON.parse(value));
       }
     } catch (error) {
-      // Error retrieving data
+      console.log(error);
     }
   };
   
+//   useEffect(() => {
+ 
+//     _retrieveWatchList();
+
+// }, [state.length]);
+
   useEffect(() => {
     setFlag(true);
-    if(flag===false){
+    if(flag === false){
           _retrieveWatchList();
     }else{
       setFlag(false)

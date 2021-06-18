@@ -36,48 +36,43 @@ export default function StocksScreen({ route }) {
       console.error(error);
     }
   };
-  
+
   const fetchPrice = async (symbol) => {
     try {
       let data = await getPrice(symbol);
-      console.log(data);
       setInfo((x) => {
         x.push(data);
         return [...x];
       });
-      console.log(info);
     } catch (error) {
       console.log(error);
     }
   };
 
   useEffect(() => {
-    // console.log("useEffect");
-    // console.log(watchList);
     setFlag(true);
     if (flag === false) {
       setInfo([]);
       watchList.map((stock) => {
-        // console.log(stock);
         fetchPrice(stock.newSymbol);
-        // console.log("====");
       })
     } else {
       setFlag(false)
     }
 
   }, [watchList]);
-  console.log(stock);
+
   return (
     <View style={styles.container}>
       <ScrollView style={styles.scrollView}>
         {info.map((stock) => {
 
           return (
-            <TouchableOpacity key={stock.symbol} onPress={() => {setStock(stock); setPressed(true);}} style={styles.row}>
-              <Text style={styles.item}>{stock.symbol}    {stock.price}     </Text>
-              {stock.changed<0 && <Text style={styles.negative}>{stock.changed}</Text>}
-              {stock.changed>0 && <Text style={styles.positive}>{stock.changed}</Text>}
+            <TouchableOpacity key={stock.symbol} onPress={() => { setStock(stock); setPressed(true); }} style={styles.row}>
+              <Text style={styles.symbolInStock}>{stock.symbol}</Text>
+              <Text style={styles.closePrice}>   {stock.price}     </Text>
+              {stock.changed < 0 && <Text style={styles.negative}>{stock.changed}</Text>}
+              {stock.changed > 0 && <Text style={styles.positive}>{stock.changed}</Text>}
             </TouchableOpacity>
 
           );
@@ -88,12 +83,12 @@ export default function StocksScreen({ route }) {
           <StockTable table={stock} />
         </View>
         <View>
-          <StockGraph detail={stock.symbol}/>
+          <StockGraph detail={stock.symbol} />
         </View>
       </Swiper>
- }
- {!pressed && <Text style={styles.item}>Please select the stock. </Text>}
-     
+      }
+      {!pressed && <Text style={styles.item}>Please select the stock. </Text>}
+
     </View>
   );
 }
@@ -101,35 +96,56 @@ export default function StocksScreen({ route }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: 22
+    justifyContent: "space-between",
+    alignItems: "center",
+    padding: scaleSize(5),
+    borderBottomWidth: scaleSize(1),
   },
   scrollView: {
     marginLeft: '20%',
     width: '100%',
-    marginTop: '3%',
-height: '50%'
+    height: '50%'
   },
-  item: {
-    fontSize: 15,
-    height: 44,
+  symbolInStock: {
     color: 'white',
+    fontSize: scaleSize(20),
+    textAlign: "left",
+    paddingTop: scaleSize(15),
+  }, 
+  closePrice: {
+    color: 'white',
+    fontSize: scaleSize(20),
+    marginLeft: scaleSize(110),
+    justifyContent: "flex-end",
+    position: "absolute",
+    paddingTop: scaleSize(15),
   },
   negative: {
-    fontSize: 15,
+    fontSize: 20,
     height: 44,
     color: 'red',
-  },  
+    marginLeft: scaleSize(250),
+    justifyContent: "flex-end",
+    position: "absolute",
+    paddingTop: scaleSize(15),
+  },
   positive: {
-    fontSize: 15,
+    fontSize: 20,
     height: 44,
     color: 'green',
+    marginLeft: scaleSize(250),
+    justifyContent: "flex-end",
+    position: "absolute",
+    paddingTop: scaleSize(15),
   },
   row: {
     flexDirection: "row",
     flexWrap: "wrap",
   },
-  // table: {
-  //   height: '30%',
-  //   color: 'white',
-  // }
+  item: {
+    fontSize: 15,
+    height: '27%',
+    color: 'white',
+    paddingTop: scaleSize(65),
+  },
 });
